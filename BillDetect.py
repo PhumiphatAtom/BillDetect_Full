@@ -1,10 +1,10 @@
 import numpy as np
 import cv2
-import common
+# import common
 import time
-import _thread
-import sys, getopt
-import wave
+# import _thread
+# import sys, getopt
+# import wave
 # import pyaudio
 from common import anorm, getsize
 
@@ -237,11 +237,11 @@ img_source20 = cv2.resize(cv2.imread("img_source/1000b2.bmp", 0), (300, 156))
 temp_kp20, temp_desc20 = detector.detectAndCompute(img_source20, None)
 
 # preLoad sound
-sound20 = wave.open(r"sound/20.wav", "rb")
-sound50 = wave.open(r"sound/50.wav", "rb")
-sound100 = wave.open(r"sound/100.wav", "rb")
-sound500 = wave.open(r"sound/500.wav", "rb")
-sound1000 = wave.open(r"sound/1000.wav", "rb")
+# sound20 = wave.open(r"sound/20.wav", "rb")
+# sound50 = wave.open(r"sound/50.wav", "rb")
+# sound100 = wave.open(r"sound/100.wav", "rb")
+# sound500 = wave.open(r"sound/500.wav", "rb")
+# sound1000 = wave.open(r"sound/1000.wav", "rb")
 
 while True:
     t1 = cv2.getTickCount()

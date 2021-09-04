@@ -10,19 +10,7 @@ import cv2
 chunk = 1024
 FLANN_INDEX_KDTREE = 5
 
-
 app = FastAPI()
-
-# @app.get("/")
-# async def read_root():
-#     return {"Hello": "World"}
-
-# @app.post("/")
-# async def root(file: UploadFile = File(...)):
-#     with open(f'{file.filename}', "wb") as buffer:
-#         shutil.copyfileobj(file.file, buffer)
-
-#     return {"file_name": file.filename}
 
 def init_feature():
     detector = cv2.xfeatures2d.SIFT_create()
@@ -132,7 +120,7 @@ def detect_bill(frame):
     count = 0
     img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     while True:
-        if not found:
+        if not found: #not false = true
             if searchIndex <= 20:
                 if searchIndex == 1:
                     kp1 = temp_kp1
@@ -250,12 +238,10 @@ async def upload_image(files: List[UploadFile] = File(...)):
             shutil.copyfileobj(img.file, buffer)
     return {"file": img.filename}
 
-
 @app.get("/{filename}")
 async def show_image(filename):
     detected = detect_bill(cv2.imread("image/"+filename))
     return {"detect": detected}
-
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)
