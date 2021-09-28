@@ -120,7 +120,7 @@ def detect_bill(frame):
     count = 0
     img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     while True:
-        if not found: #not false = true
+        if not found:
             if searchIndex <= 20:
                 if searchIndex == 1:
                     kp1 = temp_kp1
@@ -223,25 +223,35 @@ def detect_bill(frame):
         if(found == True):
             return showText
 
+@app.post("/upload-file/")
+async def create_upload_file(uploaded_file: UploadFile = File(...)):
+    img = cv2.imdecode(np.fromstring(uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+    detected = detect_bill(img)
+    return {"detect": detected}
 
-# @app.post("/uploadfile/")
-# async def create_upload_file(file: UploadFile = File(...)):
-#     filename_upload = file.filename
-#     detected = detect_bill(cv2.imread("img_test/"+filename_upload))
+# @app.post("/upload-file/")
+# async def create_upload_file(uploaded_file: UploadFile = File(...)):
+#     file_location = f"image/{uploaded_file.filename}"
+#     with open(file_location, "wb+") as file_object:
+#         shutil.copyfileobj(uploaded_file.file, file_object)
+#     detected = detect_bill(cv2.imread("image/" + uploaded_file.filename))
 #     return {"detect": detected}
 
+# @app.get("/")
+# async def connected():
+#     return {"Hello": "hello"}
 
-@app.post("/upload/")
-async def upload_image(files: List[UploadFile] = File(...)):
-    for img in files:
-        with open(f"image/{img.filename}", "wb") as buffer:
-            shutil.copyfileobj(img.file, buffer)
-    return {"file": img.filename}
+# @app.post("/upload/")
+# async def upload_image(files: List[UploadFile] = File(...)):
+#     for img in files:
+#         with open(f"image/{img.filename}", "wb") as buffer:
+#             shutil.copyfileobj(img.file, buffer)
+#     return {"file": img.filename}
 
-@app.get("/{filename}")
-async def show_image(filename):
-    detected = detect_bill(cv2.imread("image/"+filename))
-    return {"detect": detected}
+# @app.get("/{filename}")
+# async def show_image(filename):
+#     detected = detect_bill(cv2.imread("image/"+filename))
+#     return {"detect": detected}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)
