@@ -227,7 +227,7 @@ def detect_bill(frame):
 async def create_upload_file(uploaded_file: UploadFile = File(...)):
     img = cv2.imdecode(np.fromstring(uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
     detected = detect_bill(img)
-    return {"detect": detected}
+    return {"Detect": detected}
 
 # @app.post("/upload-file/")
 # async def create_upload_file(uploaded_file: UploadFile = File(...)):
