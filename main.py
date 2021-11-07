@@ -112,13 +112,14 @@ temp_kp20, temp_desc20 = detector.detectAndCompute(img_source20, None)
 
 
 def detect_bill(frame):
-    MIN_BACK = 30
-    MIN_FRONT = 80
+    MIN_BACK = 20
+    MIN_FRONT = 62
     MIN_POINT = MIN_FRONT
     found = False
     searchIndex = 1
     count = 0
     img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    img2 = cv2.equalizeHist(img2)
     while True:
         if not found:
             if searchIndex <= 20:
@@ -227,7 +228,19 @@ def detect_bill(frame):
 async def create_upload_file(uploaded_file: UploadFile = File(...)):
     img = cv2.imdecode(np.fromstring(uploaded_file.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
     detected = detect_bill(img)
-    return {"Detect": detected}
+    if detected == "1000":
+        soundLink = "https://mysrtp.com/project_detect/1000.wav"
+    elif detected == "500":
+        soundLink = "https://mysrtp.com/project_detect/500.wav"
+    elif detected == "100":
+        soundLink = "https://mysrtp.com/project_detect/100.wav"
+    elif detected == "50":
+        soundLink = "https://mysrtp.com/project_detect/50.wav"
+    elif detected == "20":
+        soundLink = "https://mysrtp.com/project_detect/20.wav"
+    else :
+        soundLink = "https://mysrtp.com/project_detect/not.wav"
+    return {"Detect": detected, "Link": soundLink}
 
 # @app.post("/upload-file/")
 # async def create_upload_file(uploaded_file: UploadFile = File(...)):
